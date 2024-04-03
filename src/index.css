@@ -1,0 +1,66 @@
+:root {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    avenir next,
+    avenir,
+    segoe ui,
+    helvetica neue,
+    helvetica,
+    Cantarell,
+    Ubuntu,
+    roboto,
+    noto,
+    arial,
+    sans-serif;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background-color: #e5e5e5;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+
+.content-container > * + * {
+  margin-top: 0.75rem;
+}
+
+.inputs-container {
+  display: flex;
+}
+
+.inputs-container > * + * {
+  margin-left: 0.75rem;
+}
+
+.table-container {
+  min-width: 500px;
+}
+
+@media (max-width: 600px) {
+  .inputs-container {
+    flex-direction: column;
+  }
+
+  .inputs-container > * + * {
+    margin-top: 0.75rem;
+    margin-left: 0;
+  }
+
+  .table-container {
+    min-width: auto;
+  }
+}
