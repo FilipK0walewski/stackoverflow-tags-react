@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 
 interface Props {
@@ -20,8 +20,8 @@ const PagesizeInput = ({
   changeTimeoutMs = 500,
   onChange,
 }: Props) => {
-  const [inputValue, setInputValue] = useState(initValue)
-  const [timeoutId, setTimeoutId] = useState<number | null | any>(null)
+  const [inputValue, setInputValue] = useState<number | string>(initValue)
+  const [timeoutId, setTimeoutId] = useState<any>(null)
 
   const clearLastTimeout = () => {
     if (timeoutId) {
@@ -29,32 +29,36 @@ const PagesizeInput = ({
     }
   }
 
-  const handlePagesizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let newValue = parseInt(event.target.value)
+  const setValidValue = () => {
+    let newValue = inputValue
+    if (typeof newValue === 'string') {
+      newValue = parseInt(newValue) || initValue
+    }
     if (newValue > maxValue) {
       newValue = maxValue
     } else if (newValue < minValue) {
       newValue = minValue
     }
+    setInputValue(newValue)
+    onChange(newValue)
+  }
 
-    clearLastTimeout()
-    if (inputValue !== newValue) {
-      setInputValue(newValue)
-      if (changeTimeoutMs) {
-        const newTimeoutId = setTimeout(() => {
-          onChange(newValue)
-        }, changeTimeoutMs)
-        setTimeoutId(newTimeoutId)
-      } else {
-        onChange(newValue)
-      }
-    }
+  const handlePagesizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value)
   }
 
   const handleBlur = () => {
     clearLastTimeout()
-    onChange(inputValue)
+    setValidValue()
   }
+
+  useEffect(() => {
+    clearLastTimeout()
+    const newTimeoutId = setTimeout(() => {
+      setValidValue()
+    }, changeTimeoutMs || 1)
+    setTimeoutId(newTimeoutId)
+  }, [inputValue])
 
   return (
     <TextField

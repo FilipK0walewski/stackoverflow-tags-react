@@ -48,7 +48,7 @@ const App = () => {
       <div className="inputs-container">
         <PagesizeInput
           label="Pagesize"
-          initValue={pagesize}
+          initValue={50}
           disabled={loading}
           onChange={handlePagesizeChange}
           minValue={1}
